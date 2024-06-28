@@ -1,0 +1,86 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
+import { PaginateQuery } from '@common/dto/paginate.query';
+import { PostService } from '@modules/post/services/frontend/post.service';
+import { ApiResource } from '@common/reponses/api-resource';
+import { UseResources } from 'interceptors/use-resources.interceptor';
+import { PostResourceDto } from '@modules/post/resources/post.resource';
+import { CreatePostDto } from '@modules/post/dto/create-post.dto';
+import { UpdatePostDto } from '@modules/post/dto/update-post.dto';
+
+@Controller('api/v1/frontend/post')
+export class PostController {
+  constructor(private readonly postService: PostService) {}
+
+  @Get()
+  @UseResources(PostResourceDto)
+  async paginate(
+    @Query() { page, limit }: PaginateQuery,
+  ): Promise<ApiResource> {
+    try {
+      const reponse = await this.postService.paginate({
+        page,
+        limit,
+      });
+
+      return ApiResource.successResponse(reponse);
+    } catch (error) {
+      return ApiResource.errorResponse(error);
+    }
+  }
+
+  @Get(':id')
+  async findOneById(@Param('id') id: number): Promise<ApiResource> {
+    try {
+      const response = await this.postService.findOneById(id);
+
+      return ApiResource.successResponse(response);
+    } catch (error) {
+      return ApiResource.errorResponse(error);
+    }
+  }
+
+  @Post()
+  async create(@Body() payload: CreatePostDto): Promise<ApiResource> {
+    try {
+      const response = await this.postService.create(payload);
+
+      return ApiResource.successResponse(response);
+    } catch (error) {
+      return ApiResource.errorResponse(error);
+    }
+  }
+
+  @Patch(':id')
+  async update(
+    @Param('id') id: number,
+    @Body() payload: UpdatePostDto,
+  ): Promise<ApiResource> {
+    try {
+      const response = await this.postService.update(id, payload);
+
+      return ApiResource.successResponse(response);
+    } catch (error) {
+      return ApiResource.errorResponse(error);
+    }
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') id: number): Promise<ApiResource> {
+    try {
+      const response = await this.postService.remove(id);
+
+      return ApiResource.successResponse(response);
+    } catch (error) {
+      return ApiResource.errorResponse(error);
+    }
+  }
+}
