@@ -6,7 +6,7 @@ export class UserException extends ApiException {
    * @returns ApiException
    */
   static notFound(): ApiException {
-    throw new ApiException(100201, [], HttpStatus.OK);
+    throw new ApiException(100101, [], HttpStatus.OK);
   }
 
   /**
@@ -14,7 +14,7 @@ export class UserException extends ApiException {
    * @returns ApiException
    */
   static deleteError(error?: string[]): ApiException {
-    throw new ApiException(100202, error);
+    throw new ApiException(100102, error);
   }
 
   /**
@@ -22,7 +22,7 @@ export class UserException extends ApiException {
    * @returns ApiException
    */
   static createError(error?: string[]): ApiException {
-    throw new ApiException(100203, error);
+    throw new ApiException(100103, error);
   }
 
   /**
@@ -30,6 +30,6 @@ export class UserException extends ApiException {
    * @returns ApiException
    */
   static updateError(error?: string[]): ApiException {
-    throw new ApiException(100204, error);
+    throw new ApiException(100104, error);
   }
 }

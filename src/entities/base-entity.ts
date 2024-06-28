@@ -22,15 +22,15 @@ export class BaseEntity {
   @Column({ type: 'int' })
   updatedBy?: number;
 
-  @DeleteDateColumn({
-    type: 'timestamp',
-    nullable: true,
-  })
-  deletedDate?: Date;
-
   @Column({
     type: 'bool',
     default: true,
   })
   isActive?: boolean;
+
+  @DeleteDateColumn({
+    type: 'timestamp',
+    nullable: true,
+  })
+  deletedDate?: Date;
 }
