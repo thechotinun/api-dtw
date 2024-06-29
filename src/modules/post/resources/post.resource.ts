@@ -1,14 +1,7 @@
 import { BaseResourceDto } from '@common/resources/base.resource';
 import { ResourceWithPaginateDto } from '@common/resources/paginate.resource';
 import { Expose, Type } from 'class-transformer';
-
-class CommunityDto {
-  @Expose()
-  id: number;
-
-  @Expose()
-  name: string;
-}
+import { Community } from '@entities/community.entity';
 
 export class PostDto extends BaseResourceDto {
   @Expose()
@@ -18,8 +11,8 @@ export class PostDto extends BaseResourceDto {
   description: string;
 
   @Expose()
-  @Type(() => CommunityDto)
-  community: CommunityDto;
+  @Type(() => Community)
+  community: Community;
 }
 
 export class PostResourceDto extends ResourceWithPaginateDto {

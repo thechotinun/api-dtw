@@ -1,4 +1,5 @@
 import {
+  Req,
   Body,
   Controller,
   Delete,
@@ -8,6 +9,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { PaginateQuery } from '@common/dto/paginate.query';
 import { PostService } from '@modules/post/services/frontend/post.service';
 import { ApiResource } from '@common/reponses/api-resource';
@@ -15,6 +17,7 @@ import { UseResources } from 'interceptors/use-resources.interceptor';
 import { PostResourceDto } from '@modules/post/resources/post.resource';
 import { CreatePostDto } from '@modules/post/dto/create-post.dto';
 import { UpdatePostDto } from '@modules/post/dto/update-post.dto';
+import { AuthenticatedRequest } from '@common/middlewares/auth/authenticate.middlewares';
 
 @Controller('api/v1/frontend/post')
 export class PostController {
@@ -49,9 +52,13 @@ export class PostController {
   }
 
   @Post()
-  async create(@Body() payload: CreatePostDto): Promise<ApiResource> {
+  async create(
+    @Req() request: Request,
+    @Body() payload: CreatePostDto,
+  ): Promise<ApiResource> {
     try {
-      const response = await this.postService.create(payload);
+      const user = (request as AuthenticatedRequest).user;
+      const response = await this.postService.create(payload, user);
 
       return ApiResource.successResponse(response);
     } catch (error) {
@@ -61,11 +68,13 @@ export class PostController {
 
   @Patch(':id')
   async update(
+    @Req() request: Request,
     @Param('id') id: number,
     @Body() payload: UpdatePostDto,
   ): Promise<ApiResource> {
     try {
-      const response = await this.postService.update(id, payload);
+      const user = (request as AuthenticatedRequest).user;
+      const response = await this.postService.update(id, payload, user);
 
       return ApiResource.successResponse(response);
     } catch (error) {

@@ -1,4 +1,5 @@
 import { Post } from '@entities/post.entity';
+import { User } from '@entities/user.entity';
 import { PostException } from '@exceptions/app/post.exception';
 import { CreatePostDto } from '@modules/post/dto/create-post.dto';
 import { UpdatePostDto } from '@modules/post/dto/update-post.dto';
@@ -51,7 +52,7 @@ export class PostService {
       });
   }
 
-  async create(payload: CreatePostDto): Promise<Post> {
+  async create(payload: CreatePostDto, user: User): Promise<Post> {
     try {
       const community = await this.checkCommunity(payload.community);
 
@@ -60,8 +61,9 @@ export class PostService {
       }
 
       const create = await this.postRepository.create(payload);
-      create.createdBy = 1412;
-      create.updatedBy = 1412;
+      create.user = user.id;
+      create.createdBy = user.id;
+      create.updatedBy = user.id;
 
       return await this.postRepository.save(create);
     } catch (error) {
@@ -69,19 +71,23 @@ export class PostService {
     }
   }
 
-  async update(id: number, payload: UpdatePostDto): Promise<Post> {
+  async update(id: number, payload: UpdatePostDto, user: User): Promise<Post> {
     try {
       const community = await this.checkCommunity(payload.community);
 
       if (!community) {
         throw new Error('COMMUNITY_NOT_FOUND');
       }
-
-      await this.findOneById(id);
+      const post = await this.postRepository.findOne({
+        where: { id: id, user: user.id },
+      });
+      if (!post) {
+        throw new Error('POST_NOT_FOUND');
+      }
 
       await this.postRepository.update(id, {
         ...payload,
-        updatedBy: 8,
+        updatedBy: user.id,
       });
 
       return await this.findOneById(id);

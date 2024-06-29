@@ -1,25 +1,6 @@
 import { ResourceDto } from '@common/resources/paginate.resource';
 import { Expose, Type } from 'class-transformer';
-
-class UserResource {
-  @Expose()
-  id: number;
-
-  @Expose()
-  email: string;
-
-  @Expose()
-  userName: string;
-
-  @Expose()
-  firstName: string;
-
-  @Expose()
-  lastName: string;
-
-  @Expose()
-  role: string;
-}
+import { User } from '@entities/user.entity';
 
 export class AuthResource {
   @Expose()
@@ -29,8 +10,8 @@ export class AuthResource {
   refreshToken: string;
 
   @Expose()
-  @Type(() => UserResource)
-  user: UserResource;
+  @Type(() => User)
+  user: User;
 }
 
 export class AuthResourceDto extends ResourceDto {
