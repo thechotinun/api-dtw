@@ -62,7 +62,7 @@ export class PostService {
         where: {
           id: id,
         },
-        relations: ['community'],
+        relations: ['community', 'comment'],
       })
       .catch(() => {
         throw PostException.notFound();
