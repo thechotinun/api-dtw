@@ -1,4 +1,9 @@
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import {
+  Module,
+  NestModule,
+  MiddlewareConsumer,
+  RequestMethod,
+} from '@nestjs/common';
 import { PostRepository } from '@repositories/post.repository';
 import { UserRepository } from '@repositories/user.repository';
 import { CommunityRepository } from '@repositories/community.repository';
@@ -21,6 +26,12 @@ import { AuthModule } from '@modules/auth/auth.module';
 })
 export class PostModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthenticateMiddleware).forRoutes(FrontendPostController);
+    consumer
+      .apply(AuthenticateMiddleware)
+      .exclude(
+        { path: 'api/v1/frontend/post', method: RequestMethod.GET },
+        { path: 'api/v1/frontend/post/:id', method: RequestMethod.GET },
+      )
+      .forRoutes(FrontendPostController);
   }
 }

@@ -56,6 +56,20 @@ export class PostService {
     return paginate<Post>(queryBuilder, options);
   }
 
+  async paginateOurBlog(
+    options: IPaginationOptions,
+    user: User,
+  ): Promise<Pagination<Post>> {
+    const { id } = user;
+    const queryBuilder = this.postRepository
+      .createQueryBuilder('posts')
+      .leftJoinAndSelect('posts.community', 'community')
+      .where('posts.userId = :id', { id })
+      .orderBy('posts.createdDate', 'DESC');
+
+    return paginate<Post>(queryBuilder, options);
+  }
+
   async findOneById(id: number): Promise<Post> {
     return await this.postRepository
       .findOneOrFail({
