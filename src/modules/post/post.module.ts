@@ -23,6 +23,7 @@ import { AuthModule } from '@modules/auth/auth.module';
     CommentRepository,
     FrontendPostService,
   ],
+  exports: [FrontendPostService],
 })
 export class PostModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

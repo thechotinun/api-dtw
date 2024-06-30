@@ -51,6 +51,8 @@ export class PostService {
     const queryBuilder = this.postRepository
       .createQueryBuilder('posts')
       .leftJoinAndSelect('posts.community', 'community')
+      // .leftJoinAndSelect('posts.comment', 'comment')
+      .loadRelationCountAndMap('posts.commentCount', 'posts.comment')
       .orderBy('posts.createdDate', 'DESC');
 
     return paginate<Post>(queryBuilder, options);
@@ -58,12 +60,13 @@ export class PostService {
 
   async paginateOurBlog(
     options: IPaginationOptions,
-    user: User,
+    id: number,
   ): Promise<Pagination<Post>> {
-    const { id } = user;
     const queryBuilder = this.postRepository
       .createQueryBuilder('posts')
       .leftJoinAndSelect('posts.community', 'community')
+      // .leftJoinAndSelect('posts.comment', 'comment')
+      .loadRelationCountAndMap('posts.commentCount', 'posts.comment')
       .where('posts.userId = :id', { id })
       .orderBy('posts.createdDate', 'DESC');
 

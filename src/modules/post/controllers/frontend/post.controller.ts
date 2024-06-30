@@ -46,28 +46,6 @@ export class PostController {
     }
   }
 
-  @Get('user/ourblog')
-  @UseResources(PostResourceDto)
-  async paginateOurBlog(
-    @Req() request: Request,
-    @Query() { page, limit }: PaginateQuery,
-  ): Promise<ApiResource> {
-    try {
-      const user = (request as AuthenticatedRequest).user;
-      const reponse = await this.postService.paginateOurBlog(
-        {
-          page,
-          limit,
-        },
-        user,
-      );
-
-      return ApiResource.successResponse(reponse);
-    } catch (error) {
-      return ApiResource.errorResponse(error);
-    }
-  }
-
   @Get(':id')
   async findOneById(@Param('id') id: number): Promise<ApiResource> {
     try {

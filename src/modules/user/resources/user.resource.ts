@@ -18,7 +18,7 @@ class CommunityDto {
 //   text: string;
 // }
 
-export class PostDto extends BaseResourceDto {
+export class UserDto extends BaseResourceDto {
   @Expose()
   title: string;
 
@@ -37,8 +37,8 @@ export class PostDto extends BaseResourceDto {
   commentCount: number;
 }
 
-export class PostResourceDto extends ResourceWithPaginateDto {
+export class UserResourceDto extends ResourceWithPaginateDto {
   @Expose()
-  @Type(() => PostDto)
-  data: PostDto;
+  @Type(() => UserDto)
+  data: UserDto;
 }

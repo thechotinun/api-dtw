@@ -3,23 +3,24 @@ import { OauthUser } from '@entities/o-auth-user.entity';
 import { User } from '@entities/user.entity';
 import { AuthException } from '@exceptions/app/auth.exception';
 import { LoginDto } from '@modules/auth/dto/frontend/login.dto';
-import { UserService } from '@modules/user/services/frontend/user.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OauthUserRepository } from '@repositories/o-auth.repository';
+import { UserRepository } from '@repositories/user.repository';
 import { compare } from 'bcrypt';
 import { get } from 'lodash';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     @InjectRepository(OauthUserRepository)
     private readonly oAuthUserRepository: OauthUserRepository,
+    @InjectRepository(UserRepository)
+    private readonly userRepository: UserRepository,
   ) {}
 
   comparePassword = async (password: string, userPassword: string) =>
@@ -27,7 +28,7 @@ export class AuthService {
 
   async signIn(credential: LoginDto) {
     const { userName } = credential;
-    const user = await this.userService.findOne(userName);
+    const user = await this.userRepository.findOneUser(userName);
 
     const oAuth: OauthUser = await this.createOauthUser(user);
 
