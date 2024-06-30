@@ -1,7 +1,7 @@
 import { ApiException } from '@exceptions/app/api.exception';
 import { HttpStatus } from '@nestjs/common';
 
-export class PostException extends ApiException {
+export class CommentException extends ApiException {
   /**
    * @returns ApiException
    */

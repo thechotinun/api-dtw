@@ -1,6 +1,6 @@
 import { IsNotEmpty, MaxLength } from 'class-validator';
 
-export class UpdatePostDto {
+export class UpdateCommentDto {
   @IsNotEmpty()
   @MaxLength(100)
   text: string;

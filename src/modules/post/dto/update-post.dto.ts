@@ -12,3 +12,9 @@ export class UpdatePostDto {
   @IsNotEmpty()
   community?: number;
 }
+
+export class UpdateCommentDto {
+  @IsNotEmpty()
+  @MaxLength(100)
+  text: string;
+}
