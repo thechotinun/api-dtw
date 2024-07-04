@@ -12,6 +12,12 @@ async function bootstrap() {
 
   const configService = app.get<ConfigService>(ConfigService);
 
+  app.enableCors({
+    origin: [configService.get<string>('APP_URL')],
+    methods: 'GET, PUT, PATCH, POST, DELETE',
+    allowedHeaders: 'Content-Type, Authorization',
+  });
+
   const isDevelopmentMode =
     configService.get<'test' | 'develop' | 'production'>('mode') !==
     'production';
