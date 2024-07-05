@@ -6,11 +6,13 @@ import { ApiResource } from '@common/reponses/api-resource';
 import { UseResources } from 'interceptors/use-resources.interceptor';
 import { UserResourceDto } from '@modules/user/resources/user.resource';
 import { AuthenticatedRequest } from '@common/middlewares/auth/authenticate.middlewares';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('api/v1/frontend/user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @ApiBearerAuth()
   @Get('ourblog')
   @UseResources(UserResourceDto)
   async paginateOurBlog(

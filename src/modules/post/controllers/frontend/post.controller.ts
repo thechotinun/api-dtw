@@ -24,6 +24,7 @@ import {
   UpdateCommentDto,
 } from '@modules/post/dto/update-post.dto';
 import { AuthenticatedRequest } from '@common/middlewares/auth/authenticate.middlewares';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('api/v1/frontend/post')
 export class PostController {
@@ -57,6 +58,7 @@ export class PostController {
     }
   }
 
+  @ApiBearerAuth()
   @Post()
   async create(
     @Req() request: Request,
@@ -72,6 +74,7 @@ export class PostController {
     }
   }
 
+  @ApiBearerAuth()
   @Post(':postId/comment')
   async createComment(
     @Req() request: Request,
@@ -92,6 +95,7 @@ export class PostController {
     }
   }
 
+  @ApiBearerAuth()
   @Patch(':id')
   async update(
     @Req() request: Request,
@@ -108,6 +112,7 @@ export class PostController {
     }
   }
 
+  @ApiBearerAuth()
   @Patch(':postId/comment/:id')
   async updateComment(
     @Req() request: Request,
@@ -130,6 +135,7 @@ export class PostController {
     }
   }
 
+  @ApiBearerAuth()
   @Delete(':id')
   async remove(
     @Req() request: Request,
@@ -145,6 +151,7 @@ export class PostController {
     }
   }
 
+  @ApiBearerAuth()
   @Delete(':postId/comment/:id')
   async removeComment(
     @Req() request: Request,

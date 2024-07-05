@@ -35,7 +35,11 @@ async function bootstrap() {
       app,
       SwaggerModule.createDocument(
         app,
-        new DocumentBuilder().setTitle('DTW').setVersion('1.0').build(),
+        new DocumentBuilder()
+          .setTitle('DTW')
+          .setVersion('1.0')
+          .addBearerAuth()
+          .build(),
       ),
       { useGlobalPrefix: true },
     );
